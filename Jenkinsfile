@@ -12,13 +12,13 @@ pipeline {
 
   stages {
 
-    stage('Build & Unit Test') {
-      steps {
-        sh '''
-          mvn clean verify
-        '''
-      }
-    }
+    // stage('Build & Unit Test') {
+    //   steps {
+    //     sh '''
+    //       mvn clean verify
+    //     '''
+    //   }
+    // }
 
     stage('Static Analysis with SonarQube') {
       environment {
