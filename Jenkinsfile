@@ -31,7 +31,7 @@ pipeline {
             sh """
               ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=spring-petclinic \
-                -Dsonar.projectName=Spring PetClinic \
+                -Dsonar.projectName='spring-petclinic' \
                 -Dsonar.projectVersion=1.0 \
                 -Dsonar.sources=src/main/java \
                 -Dsonar.java.binaries=target/classes
