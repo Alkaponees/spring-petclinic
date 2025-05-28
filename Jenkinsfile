@@ -27,16 +27,16 @@ pipeline {
       steps {
         script {
           withSonarQubeEnv('Sonar') { // 'Sonar' is the Jenkins SonarQube server name
-            def scannerHome = tool 'Sonar' // 'SonarScanner' is the Jenkins tool name
-            sh """
+            def scannerHome = tool 'SonarScanner' // 'SonarScanner' is the Jenkins tool name
+            sh '''#!/bin/bash
               export SONAR_TOKEN=$SONAR_TOKEN
-              ${scannerHome}/bin/sonar-scanner \
+              "$scannerHome/bin/sonar-scanner" \
                 -Dsonar.projectKey=spring-petclinic \
-                -Dsonar.projectName='spring-petclinic' \
+                -Dsonar.projectName="spring-petclinic" \
                 -Dsonar.projectVersion=1.0 \
                 -Dsonar.sources=src/main/java \
                 -Dsonar.java.binaries=target/classes
-            """
+            '''
           }
         }
       }
