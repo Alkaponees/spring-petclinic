@@ -27,7 +27,7 @@ pipeline {
       steps {
         script {
           withSonarQubeEnv('Sonar') { // 'Sonar' is the Jenkins SonarQube server name
-            def scannerHome = tool 'SonarScanner' // 'SonarScanner' is the Jenkins tool name
+            def scannerHome = tool 'Sonar' // 'SonarScanner' is the Jenkins tool name
             sh """
               ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=spring-petclinic \
