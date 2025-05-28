@@ -44,20 +44,13 @@ pipeline {
 
     stage('Snyk Scan') {
       environment {
-        snykToken=credentials('snyk-token')
+        SNYK_TOKEN=credentials('snyk-token')
       }
       steps {
-        snykSecurity(
-          snykInstallation: 'SnykCLI',
-          snykTokenId: 'snykToken',
-          targetFile: 'pom.xml',
-          projectName: 'spring-petclinic',
-          failOnIssues: false,
-          monitorProjectOnBuild: true,
-          severity: 'low',
-          additionalArguments: '--all-projects'
-        )
-      }
+        sh '''
+          snyk auth $SNYK_TOKEN
+          snyk test --all-projects || true
+        '''
     }
 
     stage('Check Docker Access') {
