@@ -44,7 +44,7 @@ pipeline {
 
     stage('Snyk Scan') {
       environment {
-        SNYK_TOKEN = credentials('snyk-token')
+        snyk-token= credentials('snyk-token')
       }
       steps {
         snykSecurity(
