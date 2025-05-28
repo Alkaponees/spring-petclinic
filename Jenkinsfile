@@ -20,27 +20,27 @@ pipeline {
     //   }
     // }
 
-    stage('Static Analysis with SonarQube') {
-      environment {
-        SONAR_TOKEN = credentials('sonar-token') // Jenkins secret with ID 'sonar-token'
-      }
-      steps {
-        script {
-          withSonarQubeEnv('Sonar') { // Jenkins Sonar server name
-            def scannerHome = tool name: 'Sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-            sh """
-              ${scannerHome}/bin/sonar-scanner \\
-                -Dsonar.projectKey=spring-petclinic \\
-                -Dsonar.projectName=spring-petclinic \\
-                -Dsonar.projectVersion=1.0 \\
-                -Dsonar.sources=src/main/java \\
-                -Dsonar.java.binaries=target/classes \\
-                -Dsonar.token=$SONAR_TOKEN
-            """
-          }
-        }
-      }
-    }
+    // stage('Static Analysis with SonarQube') {
+    //   environment {
+    //     SONAR_TOKEN = credentials('sonar-token') // Jenkins secret with ID 'sonar-token'
+    //   }
+    //   steps {
+    //     script {
+    //       withSonarQubeEnv('Sonar') { // Jenkins Sonar server name
+    //         def scannerHome = tool name: 'Sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+    //         sh """
+    //           ${scannerHome}/bin/sonar-scanner \\
+    //             -Dsonar.projectKey=spring-petclinic \\
+    //             -Dsonar.projectName=spring-petclinic \\
+    //             -Dsonar.projectVersion=1.0 \\
+    //             -Dsonar.sources=src/main/java \\
+    //             -Dsonar.java.binaries=target/classes \\
+    //             -Dsonar.token=$SONAR_TOKEN
+    //         """
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('Snyk Scan') {
       environment {
@@ -48,6 +48,7 @@ pipeline {
       }
       steps {
         snykSecurity(
+          snykInstallation: 'SnykCLI',
           snykTokenId: 'snyk-token',
           targetFile: 'pom.xml',
           projectName: 'spring-petclinic',
