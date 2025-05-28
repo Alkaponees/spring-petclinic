@@ -1,26 +1,28 @@
 pipeline {
   agent any
+
   tools {
-        maven 'MyMaven'
+    maven 'MyMaven'
   }
+
   environment {
     VAULT_ADDR = 'http://localhost:8200'
     VAULT_TOKEN = credentials('vault-token') // Jenkins credentials ID
   }
 
   stages {
-    }
+
     stage('Build & Unit Test') {
       steps {
         sh '''
-         mvn clean verify 
+          mvn clean verify
         '''
       }
     }
 
     stage('Static Analysis with SonarQube') {
       environment {
-        SONAR_TOKEN = credentials('sonar-token') // Jenkins secret with ID 'sonarqube-token'
+        SONAR_TOKEN = credentials('sonar-token') // Jenkins secret with ID 'sonar-token'
       }
       steps {
         script {
@@ -41,16 +43,17 @@ pipeline {
       }
       steps {
         snykSecurity(
-          snykTokenId: 'snyk-token',  // Credential ID
-          targetFile: 'pom.xml',      // or build.gradle / package.json etc.
+          snykTokenId: 'snyk-token',
+          targetFile: 'pom.xml',
           projectName: 'spring-petclinic',
-          failOnIssues: false,        // allows pipeline to continue on vulnerabilities
+          failOnIssues: false,
           monitorProjectOnBuild: true,
-          severity: 'low',            // can be 'low', 'medium', 'high'
+          severity: 'low',
           additionalArguments: '--all-projects'
         )
       }
     }
+
     stage('Check Docker Access') {
       steps {
         sh 'docker version'
@@ -85,10 +88,10 @@ pipeline {
     // stage('Deploy to Test Environment') {
     //   steps {
     //     sh '''
-    //     chmod +x scripts/export_env_from_vault_for_docker.sh
-    //     ./scripts/export_env_from_vault_for_docker.sh
-    //     docker compose down
-    //     docker compose -f docker-compose.yml up -d
+    //       chmod +x scripts/export_env_from_vault_for_docker.sh
+    //       ./scripts/export_env_from_vault_for_docker.sh
+    //       docker compose down
+    //       docker compose -f docker-compose.yml up -d
     //     '''
     //   }
     // }
@@ -100,7 +103,8 @@ pipeline {
     //     '''
     //   }
     // }
-  // }
+
+  }
 
   post {
     always {
