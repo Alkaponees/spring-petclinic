@@ -27,7 +27,7 @@ pipeline {
       steps {
         script {
           withSonarQubeEnv('Sonar') { // Jenkins Sonar server name
-            def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+            def scannerHome = tool name: 'Sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
             sh """
               ${scannerHome}/bin/sonar-scanner \\
                 -Dsonar.projectKey=spring-petclinic \\
