@@ -26,13 +26,17 @@ pipeline {
       }
       steps {
         script {
-          sh '''
-            mvn clean verify sonar:sonar \
-              -Dsonar.projectKey=spring-petclinic \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.token=$SONAR_TOKEN
-          '''
+          withSonarQubeEnv('Sonar') { // 'Sonar' is the Jenkins SonarQube server name
+            def scannerHome = tool 'SonarScanner' // 'SonarScanner' is the Jenkins tool name
+            sh """
+              ${scannerHome}/bin/sonar-scanner \
+                -Dsonar.projectKey=spring-petclinic \
+                -Dsonar.projectName=Spring PetClinic \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=src/main/java \
+                -Dsonar.java.binaries=target/classes
+            """
+          }
         }
       }
     }
