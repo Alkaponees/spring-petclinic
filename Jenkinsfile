@@ -8,6 +8,8 @@ pipeline {
   environment {
     VAULT_ADDR = 'http://localhost:8200'
     VAULT_TOKEN = credentials('vault-token') // Jenkins credentials ID
+    VERSION = "v.1.0.${BUILD_NUMBER}"
+    IMAGE_NAME = "spring-petclinic-devsecops"
   }
 
   stages {
@@ -65,8 +67,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
           script {
             docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-creds') {
-              def app = docker.build("${DOCKER_USER}/spring-petclinic-devsecops:latest", '-f docker/Dockerfile .')
-              app.push('latest')
+              def image = docker.build("${DOCKER_USER}/${IMAGE_NAME}:${VERSION}", '-f docker/Dockerfile .')
+              image.push("${VERSION}")
             }
           }
         }
@@ -78,8 +80,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
           sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            trivy image --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/spring-petclinic-devsecops:latest
-            trivy image --exit-code 1 --severity CRITICAL $DOCKER_USER/spring-petclinic-devsecops:latest || true
+            trivy image --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/$IMAGE_NAME:$VERSION
+            trivy image --exit-code 1 --severity CRITICAL $DOCKER_USER/$IMAGE_NAME:$VERSION || true
           '''
         }
       }
