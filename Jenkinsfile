@@ -44,12 +44,12 @@ pipeline {
 
     stage('Snyk Scan') {
       environment {
-        snyk-token=credentials('snyk-token')
+        snykToken=credentials('snyk-token')
       }
       steps {
         snykSecurity(
           snykInstallation: 'SnykCLI',
-          snykTokenId: 'snyk-token',
+          snykTokenId: 'snykToken',
           targetFile: 'pom.xml',
           projectName: 'spring-petclinic',
           failOnIssues: false,
