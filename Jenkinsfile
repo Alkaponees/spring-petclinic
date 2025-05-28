@@ -52,6 +52,7 @@ pipeline {
           snyk test --all-projects || true
         '''
     }
+    }
 
     stage('Check Docker Access') {
       steps {
