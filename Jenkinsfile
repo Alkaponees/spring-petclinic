@@ -4,6 +4,9 @@ pipeline {
   tools {
     maven 'MyMaven'
   }
+  triggers {
+    githubPush()
+  }
 
   environment {
     VAULT_ADDR = 'http://localhost:8200'
