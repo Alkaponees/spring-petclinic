@@ -4,23 +4,6 @@ services:
   db:
     image: postgres:15-alpine
     container_name: petclinic-postgres
-    entrypoint: ["/bin/sh", "-c"]
-    command: >
-      "
-      sleep 5 &&
-      psql  -U postgres -d petclinic -c \"
-      SELECT setval('vets_id_seq', (SELECT MAX(id) FROM vets), true);\"
-      && psql  -U postgres -d petclinic -c \"
-      SELECT setval('specialties_id_seq', (SELECT MAX(id) FROM specialties), true);\"
-      && psql  -U postgres -d petclinic -c \"
-      SELECT setval('types_id_seq', (SELECT MAX(id) FROM types), true);\"
-      && psql  -U postgres -d petclinic -c \"
-      SELECT setval('owners_id_seq', (SELECT MAX(id) FROM owners), true);\"
-      && psql  -U postgres -d petclinic -c \"
-      SELECT setval('pets_id_seq', (SELECT MAX(id) FROM pets), true);\"
-      && psql  -U postgres -d petclinic -c \"
-      SELECT setval('visits_id_seq', (SELECT MAX(id) FROM visits), true);\"
-      "
     env_file:
       - .env
     volumes:
@@ -29,7 +12,7 @@ services:
       - petclinic-net
 
   app:
-    image: alkaponees/spring-petclinic-devsecops:v.1.0.32
+    image: alkaponees/spring-petclinic-devsecops:v.1.0.34
     container_name: petclinic-app
     ports:
       - "8081:8080"
