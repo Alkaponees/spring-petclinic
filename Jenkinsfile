@@ -106,12 +106,14 @@ pipeline {
     stage('OWASP ZAP Scan') {
       steps {
         sh '''
+          mkdir -p zap-reports
+          chmod 755 zap-reports
           docker run --rm \
-            -v "$PWD:/zap/wrk" \
+            -v "$PWD/zap-reports:/zap/wrk" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
               -t http://host.docker.internal:8081 \
-              -g gen.conf \
+              -g /tmp/gen.conf \
               -r zap_report.html || true
         '''
       }
