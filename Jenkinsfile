@@ -101,13 +101,15 @@ pipeline {
       }
     }
 
-    // stage('OWASP ZAP Scan') {
-    //   steps {
-    //     sh '''
-    //       zap-baseline.py -t http://localhost:8081 -r zap_report.html || true
-    //     '''
-    //   }
-    // }
+    stage('OWASP ZAP Scan') {
+      steps {
+        sh '''
+          docker run --rm -v $(pwd):/zap/wrk -t owasp/zap2docker-stable zap-baseline.py \
+            -t http://localhost:8081 \
+            -g gen.conf -r zap_report.html || true
+        '''
+      }
+    }
 
   }
 
