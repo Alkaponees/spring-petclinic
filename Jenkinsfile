@@ -114,7 +114,7 @@ pipeline {
             zap-baseline.py \
               -t http://host.docker.internal:8081 \
               -g /tmp/gen.conf \
-              -r zap_report.html || true
+              -r $PWD/zap-reports/zap_report.html || true
         '''
       }
       post {
