@@ -14,7 +14,6 @@ pipeline {
 
   stages {
 
-    /*
     stage('Build & Unit Test') {
       steps {
         sh '''
@@ -101,7 +100,6 @@ pipeline {
         '''
       }
     }
-    */
 
     stage('OWASP ZAP Scan') {
       steps {
