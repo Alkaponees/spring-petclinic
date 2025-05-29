@@ -8,11 +8,12 @@ services:
       - .env
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
     networks:
       - petclinic-net
 
   app:
-    image: alkaponees/spring-petclinic-devsecops:v.1.0.34
+    image: alkaponees/spring-petclinic-devsecops:v.1.0.35
     container_name: petclinic-app
     ports:
       - "8081:8080"
