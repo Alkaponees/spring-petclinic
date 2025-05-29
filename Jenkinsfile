@@ -67,7 +67,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
           script {
             docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-creds') {
-              def image = docker.build("${DOCKER_USER}/${IMAGE_NAME}:${VERSION}", '-f docker/Dockerfile .')
+              def image = docker.build("${DOCKER_USER}/${IMAGE_NAME}:${VERSION}", '--no-cache -f docker/Dockerfile .')
               image.push("${VERSION}")
             }
           }

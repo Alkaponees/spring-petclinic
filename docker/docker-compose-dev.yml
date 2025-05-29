@@ -8,17 +8,17 @@ services:
     command: >
       "
       sleep 5 &&
-      psql  -U petclinic -d petclinic -c \"
+      psql  -U postgres -d petclinic -c \"
       SELECT setval('vets_id_seq', (SELECT MAX(id) FROM vets), true);\"
-      && psql  -U petclinic -d petclinic -c \"
+      && psql  -U postgres -d petclinic -c \"
       SELECT setval('specialties_id_seq', (SELECT MAX(id) FROM specialties), true);\"
-      && psql  -U petclinic -d petclinic -c \"
+      && psql  -U postgres -d petclinic -c \"
       SELECT setval('types_id_seq', (SELECT MAX(id) FROM types), true);\"
-      && psql  -U petclinic -d petclinic -c \"
+      && psql  -U postgres -d petclinic -c \"
       SELECT setval('owners_id_seq', (SELECT MAX(id) FROM owners), true);\"
-      && psql  -U petclinic -d petclinic -c \"
+      && psql  -U postgres -d petclinic -c \"
       SELECT setval('pets_id_seq', (SELECT MAX(id) FROM pets), true);\"
-      && psql  -U petclinic -d petclinic -c \"
+      && psql  -U postgres -d petclinic -c \"
       SELECT setval('visits_id_seq', (SELECT MAX(id) FROM visits), true);\"
       "
     env_file:
