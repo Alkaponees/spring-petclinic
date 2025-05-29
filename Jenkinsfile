@@ -109,7 +109,7 @@ pipeline {
           docker run --rm \
             --network petclinic-net \
             -v "$PWD:/zap/wrk" \
-            ghcr.io/zaproxy/zap2docker-stable \
+            ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
               -t http://petclinic-app:8080 \
               -g gen.conf \
