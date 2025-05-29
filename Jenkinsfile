@@ -114,12 +114,8 @@ stage('OWASP ZAP Scan') {
           -r zap_report.html || true
     '''
   }
-  post {
-    always {
-      archiveArtifacts artifacts: 'zap_report.html', onlyIfSuccessful: false
-    }
-  }
 }
+
   post {
     always {
       archiveArtifacts artifacts: '**/*.html', allowEmptyArchive: true
