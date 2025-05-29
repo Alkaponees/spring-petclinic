@@ -4,7 +4,9 @@ pipeline {
   tools {
     maven 'MyMaven'
   }
-
+  triggers {
+    githubPush() // 🔔 тригер на пуш у репозиторій
+  }
   environment {
     VAULT_ADDR = 'http://localhost:8200'
     VAULT_TOKEN = credentials('vault-token') // Jenkins credentials ID
