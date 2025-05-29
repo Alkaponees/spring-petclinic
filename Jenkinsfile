@@ -87,16 +87,19 @@ pipeline {
       }
     }
 
-    // stage('Deploy to Test Environment') {
-    //   steps {
-    //     sh '''
-    //       chmod +x scripts/export_env_from_vault_for_docker.sh
-    //       ./scripts/export_env_from_vault_for_docker.sh
-    //       docker compose down
-    //       docker compose -f docker-compose.yml up -d
-    //     '''
-    //   }
-    // }
+    stage('Deploy to Test Environment') {
+      steps {
+        sh '''
+          chmod +x scripts/export_env_from_vault_for_docker.sh
+          ./scripts/export_env_from_vault_for_docker.sh
+          
+          export BUILD_VERSION=$VERSION
+
+          docker compose -f docker/docker-compose-dev.yml down -v
+          docker compose -f docker/docker-compose-dev.yml up -d
+        '''
+      }
+    }
 
     // stage('OWASP ZAP Scan') {
     //   steps {

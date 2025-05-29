@@ -13,7 +13,7 @@ services:
       - petclinic-net
 
   app:
-    image: alkaponees/spring-petclinic-devsecops:v.1.0.35
+    image: alkaponees/spring-petclinic-devsecops:$BUILD_VERSION
     container_name: petclinic-app
     ports:
       - "8081:8080"
