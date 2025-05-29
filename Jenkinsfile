@@ -107,7 +107,7 @@ pipeline {
       steps {
         sh '''
           mkdir -p zap-reports
-          chmod 766 zap-reports
+          chmod 777 zap-reports
           
           HOST_IP=$(ip addr show wlo1 | awk '/inet / {print $2}' | cut -d/ -f1)
 
