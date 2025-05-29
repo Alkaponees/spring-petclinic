@@ -19,6 +19,7 @@ pipeline {
     stage('Build & Unit Test') {
       steps {
         sh '''
+          rm -rf zap-reports/zap_report.html
           mvn clean verify
         '''
       }
