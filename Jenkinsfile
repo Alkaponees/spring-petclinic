@@ -108,13 +108,16 @@ pipeline {
         sh '''
           mkdir -p zap-reports
           chmod 755 zap-reports
+          
+          HOST_IP=$(ip route | awk '/default/ { print $3 }')
+
           docker run --rm \
             -v "$PWD/zap-reports:/zap/wrk" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
-              -t http://host.docker.internal:8081 \
+              -t http://$HOST_IP:8081 \
               -g /tmp/gen.conf \
-              -r $PWD/zap-reports/zap_report.html || true
+              -r zap_report.html || true
         '''
       }
       post {
