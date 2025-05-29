@@ -107,11 +107,10 @@ pipeline {
       steps {
         sh '''
           docker run --rm \
-            --network petclinic-net \
             -v "$PWD:/zap/wrk" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
-              -t http://petclinic-app:8080 \
+              -t http://host.docker.internal:8081 \
               -g gen.conf \
               -r zap_report.html || true
         '''
