@@ -109,7 +109,7 @@ pipeline {
           mkdir -p zap-reports
           chmod 755 zap-reports
           
-          HOST_IP=$(ip route | awk '/default/ { print $3 }')
+          HOST_IP=$(ip addr show wlo1 | awk '/inet / {print $2}' | cut -d/ -f1)
 
           docker run --rm \
             -v "$PWD/zap-reports:/zap/wrk" \
