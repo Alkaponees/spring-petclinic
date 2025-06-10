@@ -19,7 +19,7 @@
       stage('Build & Unit Test') {
         steps {
           sh '''
-            rm -rf zap-reports/zap_report.html snyk-report.html trivy-report-lmh.json trivy-report-lhm.html trivy-report-crit.json trivy-report-crit.html
+            rm -rf zap-reports/zap_report.html snyk-report.html  trivy-report-lmh.html trivy-report-crit.html
             mvn clean verify
           '''
         }
@@ -83,9 +83,8 @@
           withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh '''
               echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-              trivy plugin install github.com/afdesk/scan2html
-              trivy image --format json --output plugin=scan2html --output-plugin-arg "trivy-report-lmh.html" --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/$IMAGE_NAME:$VERSION
-              trivy image --format json --output  plugin=scan2html --output-plugin-arg "trivy-report-crit.html" --exit-code 1 --severity CRITICAL $DOCKER_USER/$IMAGE_NAME:$VERSION || true
+              trivy image -f template --template "@html.tpl" -o trivy-report-lmh.html --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/$IMAGE_NAME:$VERSION
+              trivy image -f template --template "@html.tpl" -o trivy-report-crit.html --exit-code 1 --severity CRITICAL $DOCKER_USER/$IMAGE_NAME:$VERSION || true
             '''
           }
         }
