@@ -19,7 +19,7 @@
       stage('Build & Unit Test') {
         steps {
           sh '''
-            rm -rf zap-reports/zap_report.html
+            rm -rf zap-reports/zap_report.html snyk-report.html trivy-report-lhm.json trivy-report-lhm.html trivy-report-crit.json trivy-report-crit.html
             mvn clean verify
           '''
         }
