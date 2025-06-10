@@ -83,8 +83,12 @@
           withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
             sh '''
               echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-              trivy image --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/$IMAGE_NAME:$VERSION
-              trivy image --exit-code 1 --severity CRITICAL $DOCKER_USER/$IMAGE_NAME:$VERSION || true
+              trivy image --format json --output trivy-report-lmh.json --exit-code 0 --severity LOW,MEDIUM,HIGH $DOCKER_USER/$IMAGE_NAME:$VERSION
+              trivy image --format json --output trivy-report-crit.json --exit-code 1 --severity CRITICAL $DOCKER_USER/$IMAGE_NAME:$VERSION || true
+              if command -v trivy-to-html > /dev/null; then
+                trivy-to-html -i trivy-report-lhm.json -o trivy-report-lhm.html
+                trivy-to-html -i trivy-report-crit.json -o trivy-report-crit.html
+              fi
             '''
           }
         }
